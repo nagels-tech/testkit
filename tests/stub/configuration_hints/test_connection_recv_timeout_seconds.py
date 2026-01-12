@@ -70,6 +70,8 @@ class TestDirectConnectionRecvTimeout(TestkitTestCase):
                 e.msg.lower(),
                 r"server didn't respond in \d+ ?ms",
             )
+        elif get_driver_name() in ["php"]:
+            self.assertEqual("TimeoutException", e.errorType)
         else:
             self.fail("no error mapping is defined for %s driver" % driver)
 
@@ -98,6 +100,8 @@ class TestDirectConnectionRecvTimeout(TestkitTestCase):
             self.assertEqual("TransactionTerminatedError", e.errorType)
         elif driver in ["javascript"]:
             self.assertEqual("Neo4jError", e.errorType)
+        elif get_driver_name() in ["php"]:
+            self.assertEqual("TimeoutException", e.errorType)
         else:
             self.fail("no error mapping is defined for %s driver" % driver)
 
@@ -109,7 +113,7 @@ class TestDirectConnectionRecvTimeout(TestkitTestCase):
         self._start_server("1_second_exceeds.script")
         with self.assertRaises(types.DriverError) as exc:
             result = self._session.run("timeout")
-            if get_driver_name() in ["javascript", "dotnet"]:
+            if get_driver_name() in ["javascript", "dotnet","php"]:
                 result.next()
 
         list(self._session.run("in time"))
@@ -127,7 +131,7 @@ class TestDirectConnectionRecvTimeout(TestkitTestCase):
         tx = self._session.begin_transaction()
         with self.assertRaises(types.DriverError) as exc:
             result = tx.run("timeout")
-            if get_driver_name() in ["javascript", "dotnet"]:
+            if get_driver_name() in ["javascript", "dotnet","php"]:
                 result.next()
         # TODO Remove when explicit rollback requirement is removed
         if get_driver_name() in ["java", "ruby", "go"]:
@@ -153,12 +157,12 @@ class TestDirectConnectionRecvTimeout(TestkitTestCase):
         tx = self._session.begin_transaction()
         with self.assertRaises(types.DriverError) as first_run_error:
             result = tx.run("timeout")
-            if get_driver_name() in ["javascript", "dotnet"]:
+            if get_driver_name() in ["javascript", "dotnet","php"]:
                 result.next()
 
         with self.assertRaises(types.DriverError) as second_run_error:
             result = tx.run("in time")
-            if get_driver_name() in ["javascript", "dotnet"]:
+            if get_driver_name() in ["javascript", "dotnet","php"]:
                 result.next()
 
         # TODO Remove when explicit rollback requirement is removed
@@ -186,7 +190,7 @@ class TestDirectConnectionRecvTimeout(TestkitTestCase):
             if retries == 1:
                 with self.assertRaises(types.DriverError) as exc:
                     result = tx.run("RETURN 1 AS n")
-                    if get_driver_name() in ["javascript", "dotnet"]:
+                    if get_driver_name() in ["javascript", "dotnet","php"]:
                         result.next()
 
                 self._assert_is_timeout_exception(exc.exception)
