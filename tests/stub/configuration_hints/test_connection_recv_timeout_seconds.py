@@ -70,7 +70,7 @@ class TestDirectConnectionRecvTimeout(TestkitTestCase):
                 e.msg.lower(),
                 r"server didn't respond in \d+ ?ms",
             )
-        elif get_driver_name() in ["php"]:
+        elif driver in ["php"]:
             self.assertEqual("TimeoutException", e.errorType)
         else:
             self.fail("no error mapping is defined for %s driver" % driver)
@@ -100,7 +100,7 @@ class TestDirectConnectionRecvTimeout(TestkitTestCase):
             self.assertEqual("TransactionTerminatedError", e.errorType)
         elif driver in ["javascript"]:
             self.assertEqual("Neo4jError", e.errorType)
-        elif get_driver_name() in ["php"]:
+        elif driver in ["php"]:
             self.assertEqual("TimeoutException", e.errorType)
         else:
             self.fail("no error mapping is defined for %s driver" % driver)
