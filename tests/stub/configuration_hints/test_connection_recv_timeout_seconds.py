@@ -310,7 +310,8 @@ class TestRoutingConnectionRecvTimeout(TestDirectConnectionRecvTimeout):
             )
         elif get_driver_name() in ["dotnet"]:
             self.assertIn("ConnectionReadTimeoutError", e.errorType)
-
+        elif get_driver_name() in ["php"]:
+            self.assertEqual("TimeoutException", e.errorType)
         else:
             super()._assert_is_timeout_exception(e)
 
