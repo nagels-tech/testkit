@@ -71,7 +71,7 @@ class TestDirectConnectionRecvTimeout(TestkitTestCase):
                 r"server didn't respond in \d+ ?ms",
             )
         elif driver in ["php"]:
-            self.assertEqual("Neo4jException", e.errorType)
+            self.assertEqual("Laudis\\Neo4j\\Exception\\Neo4jException", e.errorType)
         else:
             self.fail("no error mapping is defined for %s driver" % driver)
 
@@ -101,7 +101,7 @@ class TestDirectConnectionRecvTimeout(TestkitTestCase):
         elif driver in ["javascript"]:
             self.assertEqual("Neo4jError", e.errorType)
         elif driver in ["php"]:
-            self.assertEqual("Neo4jException", e.errorType)
+            self.assertEqual("Laudis\\Neo4j\\Exception\\TransactionException", e.errorType)
         else:
             self.fail("no error mapping is defined for %s driver" % driver)
 
@@ -315,7 +315,7 @@ class TestRoutingConnectionRecvTimeout(TestDirectConnectionRecvTimeout):
         elif get_driver_name() in ["dotnet"]:
             self.assertIn("ConnectionReadTimeoutError", e.errorType)
         elif get_driver_name() in ["php"]:
-            self.assertEqual("Neo4jException", e.errorType)
+            self.assertEqual("Laudis\\Neo4j\\Exception\\Neo4jException", e.errorType)
         else:
             super()._assert_is_timeout_exception(e)
 
