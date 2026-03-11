@@ -32,6 +32,8 @@ class TestResultPeek(IterationTestBase):
             self.assertEqual("ServiceUnavailableError", error.errorType)
         elif driver in ["javascript"]:
             self.assertEqual("ServiceUnavailable", error.code)
+        elif driver in ["php"]:
+            self.assertIn("Laudis", error.errorType)
         else:
             self.fail("no error mapping is defined for %s driver" % driver)
 

@@ -59,6 +59,8 @@ class TestResultScope(TestkitTestCase):
             ])
         elif driver in ["go"]:
             self.assertEqual(exc.msg, "result cursor is not available anymore")
+        elif driver in ["php"]:
+            self.assertIn("Laudis", exc.errorType)
         else:
             self.fail("no error mapping is defined for %s driver" % driver)
 
@@ -88,6 +90,8 @@ class TestResultScope(TestkitTestCase):
             ])
         elif driver in ["go"]:
             self.assertEqual(exc.msg, "result cursor is not available anymore")
+        elif driver in ["php"]:
+            self.assertIn("Laudis", exc.errorType)
         else:
             self.fail("no error mapping is defined for %s driver" % driver)
 

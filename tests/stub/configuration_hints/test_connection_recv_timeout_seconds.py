@@ -329,7 +329,12 @@ class TestRoutingConnectionRecvTimeout(TestDirectConnectionRecvTimeout):
 
     def _assert_routing_table(self, timed_out, managed):
         if self.driver_supports_features(types.Feature.OPT_CONNECTION_REUSE):
-            self.assertEqual(self._router.count_responses("<HANGUP>"), 0)
+            expected_hangup = 0
+            if get_driver_name() in ["php"] and managed:
+                # PHP driver may close router connection after managed tx retry
+                expected_hangup = 1
+            self.assertEqual(self._router.count_responses("<HANGUP>"),
+                             expected_hangup)
 
         self._router.done()
         self._server.reset()

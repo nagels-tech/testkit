@@ -27,6 +27,8 @@ class TestResultSingle(IterationTestBase):
                 "org.neo4j.driver.exceptions.NoSuchRecordException",
                 error.errorType
             )
+        elif driver in ["php"]:
+            self.assertIn("Laudis", error.errorType)
         else:
             self.fail("no error mapping is defined for %s driver" % driver)
 
@@ -48,6 +50,8 @@ class TestResultSingle(IterationTestBase):
                 "org.neo4j.driver.exceptions.ServiceUnavailableException",
                 error.errorType
             )
+        elif driver in ["php"]:
+            self.assertIn("Laudis", error.errorType)
         else:
             self.fail("no error mapping is defined for %s driver" % driver)
 

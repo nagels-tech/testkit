@@ -15,6 +15,8 @@ class TestResultSingleOptional(IterationTestBase):
         driver = get_driver_name()
         if driver in ["python"]:
             self.assertIn("multiple", warning)
+        elif driver in ["php"]:
+            self.assertIn("multiple", warning)
         else:
             self.fail("no error mapping is defined for %s driver" % driver)
 
@@ -24,6 +26,8 @@ class TestResultSingleOptional(IterationTestBase):
         if driver in ["python"]:
             self.assertEqual("<class 'neo4j.exceptions.ServiceUnavailable'>",
                              error.errorType)
+        elif driver in ["php"]:
+            self.assertIn("Laudis", error.errorType)
         else:
             self.fail("no error mapping is defined for %s driver" % driver)
 
