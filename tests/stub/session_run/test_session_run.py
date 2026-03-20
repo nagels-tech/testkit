@@ -94,4 +94,7 @@ class TestSessionRun(TestkitTestCase):
         with self.assertRaises(types.DriverError) as exc:
             self._session.run("RETURN 1 AS n")
         self.assertEqual(exc.exception.code, "Neo.ClientError.MadeUp.Code")
+        self._session.close()
+        self._session = None
+        self._driver.close()
         self._server.done()
