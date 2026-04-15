@@ -1,3 +1,4 @@
+
 import nutkit.protocol as types
 from tests.shared import get_driver_name
 from tests.stub.iteration._common import IterationTestBase
@@ -10,29 +11,31 @@ class TestResultList(IterationTestBase):
 
     def _assert_connection_error(self, error):
         self.assertIsInstance(error, types.DriverError)
-        driver = get_driver_name()
-        if driver in ["python"]:
+        driver = get_driver_name().lower()
+        if driver == "python":
             self.assertEqual("<class 'neo4j.exceptions.ServiceUnavailable'>",
                              error.errorType)
-        elif driver in ["java"]:
+        elif driver == "java":
             self.assertEqual(
                 "org.neo4j.driver.exceptions.ServiceUnavailableException",
                 error.errorType
             )
-        elif driver in ["javascript"]:
+        elif driver == "javascript":
             self.assertEqual(
                 "ServiceUnavailable",
                 error.code
             )
-        elif driver in ["ruby"]:
+        elif driver == "ruby":
             self.assertEqual(
                 "Neo4j::Driver::Exceptions::ServiceUnavailableException",
                 error.errorType
             )
-        elif driver in ["dotnet"]:
+        elif driver == "dotnet":
             self.assertEqual("ServiceUnavailableError", error.errorType)
-        elif driver in ["go"]:
+        elif driver == "go":
             self.assertEqual("ConnectivityError", error.errorType)
+        elif driver == "php":
+            self.assertIn("Laudis", error.errorType)
         else:
             self.fail("no error mapping is defined for %s driver" % driver)
 
